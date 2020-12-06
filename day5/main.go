@@ -14,7 +14,7 @@ func parseSeat(s string) int {
 
 	var l = 0
 	var r = 127
-	var x = 8
+	var x = 7
 	var y = 0
 	var m = 0
 	var n = 0
@@ -23,16 +23,16 @@ func parseSeat(s string) int {
 	for _, code := range codes {
 		switch code {
 		case "F":
-			r = (r + l) >> 1
+			r = (r & l) + (r^l)>>1
 			m = l
 		case "B":
-			l = (r + l) >> 1
+			l = (r & l) + (r^l)>>1
 			m = r
 		case "R":
-			y = (x + y) >> 1
+			y = (x & y) + (x^y)>>1
 			n = x
 		case "L":
-			x = (x + y) >> 1
+			x = (x & y) + (x^y)>>1
 			n = y
 		}
 		fmt.Println(code, r, l, x, y, m, n)
@@ -62,6 +62,7 @@ func main() {
 
 	m := make(map[int]string)
 	for _, seat := range seats {
+		fmt.Println("Key:", parseSeat(seat), "Value:", seat)
 		m[parseSeat(seat)] = seat
 
 	}
